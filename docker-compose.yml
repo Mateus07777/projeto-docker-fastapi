@@ -1,0 +1,26 @@
+services:
+
+  db:
+    image: postgres:15
+    container_name: db_555125
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dimdim
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: api_555125
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/dimdim
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
